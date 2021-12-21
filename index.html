@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="./assets/css/style.css"/>
+                <title>Weather Dashboard</title>
+        </head>
+<body class="flex-column min-100-vh">
+    <header>
+        <div class="header-div">
+        <h1>Weather Dashboard</h1>
+        </div>
+    </header>
+
+    <main class="row">
+		<div class="col-12 col-md-4">
+			<div class="card">
+				<h3 class="card-header">Search for a city:</h3>
+                <form id="user-form" class="card-body">
+                    <input name="city" id="city" type="text" autofocus="true" class="form-input" />
+                    <button type="submit" class="btn search">Search</button>
+                </form>
+            </div>
+            <div class="card">
+				<h3 class="card-header">Recent searches:</h3>
+					<div class="card-body" id="recent-searches">	
+					</div>
+			</div>   
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="card" id="today-weather"></div>
+            <div class="five-day" id="five-day"><h2>Five-Day Forecast</h2></div>
+        </div>
+    </main>
+
+
+<!-- https://api.openweathermap.org/data/2.5/weather?q=hartford&appid=2fdc7aca44061435df6123deff5f269c -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
