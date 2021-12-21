@@ -67,8 +67,35 @@ body {
     margin: 20px 20px;
 }
 
-.five-day h2 {
+.divP {
+    color: whitesmoke;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.five {
+    display:flex;
+}
+
+.five-title {
+    flex: 1 100%;
+    width: 100%;
+}
+
+.five-title h2 {
     font-size: 24px;
+}
+
+.five-day {
+    display: flex;
+   
+}
+.five-day-div {
+    flex: 1 17%;
+    height: 300px;
+    background-color: #003764;
+    border: 3px solid white;
+    
 }
 
 .todayElTitle {
