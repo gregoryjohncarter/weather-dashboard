@@ -1,12 +1,13 @@
 var today = new Date();
 var apiKey = "2fdc7aca44061435df6123deff5f269c";
+// month is zero indexed, so add one
 var correctDate = today.getMonth() + 1;
 var todayDate = correctDate+"/"+today.getDate()+"/"+today.getFullYear();
 
-    // check if the array was gotten already
-    if (!tagArray) {
-        var tagArray = [];
-    }
+// check if the array was gotten already
+if (!tagArray) {
+    var tagArray = [];
+}
 
 // function to add days to a string dynamically
 function addDays(date, days) {
@@ -41,14 +42,14 @@ var getTodaysWeather = function(cityName) {
         }
     })
     .catch(function(error) {
-        alert("Unable to find city");
+        alert("Error: Unable to find city");
     });
 };
 
 // todays weather div to be appended to
 var todayEl = document.querySelector("#today-weather");
 
-// used to submit the search and define the cityname
+// used to submit the search and define the cityname pre formatted
 var formSubmitHandler = function(event) {
     event.preventDefault();
 
@@ -94,7 +95,7 @@ var displayWeather = function(weather, city) {
     icon = icon.replace("\"","");
     icon = icon.replace("\"","");
 
-    // from stack overflow for capitalizing
+    // from stack overflow, for capitalizing
     function toTitleCase(str) {
         return str.replace(
           /\w\S*/g,
@@ -102,7 +103,7 @@ var displayWeather = function(weather, city) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
           }
         );
-      }
+    }
 
     // format city name
     var city = toTitleCase(city);
@@ -113,6 +114,7 @@ var displayWeather = function(weather, city) {
     todayEl.appendChild(todayElTitle);
     todayElTitle.classList = "flex-row todayElTitle"
 
+    // create todayElQualities, the description of conditions
     var todayElQualities = document.createElement("p");
     
     // stringify values for each quality
@@ -150,6 +152,7 @@ var displayWeather = function(weather, city) {
     todayEl.appendChild(todayElQualities);
     todayElQualities.classList = "flex-row todayElQualities"
 
+    // if this search has not yet been registered, add a new button
     if (newSearch === true) {
     var recentBtn = document.createElement("button");
     recentBtn.textContent = "" + city;
@@ -159,7 +162,7 @@ var displayWeather = function(weather, city) {
     recentSearches.appendChild(recentBtn);
     }
 
-    // create divs and ps for five days
+    // create divs and p's for five days
     var fiveDiv1 = document.createElement("div");
     fiveDiv1.classList = "five-day-div"
     
@@ -318,7 +321,7 @@ var displayWeather = function(weather, city) {
     function setElement() {
         var cityElement = {};
         
-        // keep count of cities searched and therefore buttons
+        // keep count in ls of cities searched and therefore buttons
         localStorage.setItem("idCounter", window.idCounter);
         cityElement.idCounter = window.idCounter;
 
@@ -361,13 +364,13 @@ var displayWeather = function(weather, city) {
     if (newSearch === true) {
     setElement();
     }
-    
+
     // before loading buttons refresh array??
     tagArray = localStorage.getItem("tagArray");
     tagArray = JSON.parse(tagArray);
 
+        // create recent search buttons with the necessary parameters
         for (let i = 0; i <= tagArray.length - 1; i++) {
-            // button handler for adding click events for the buttons
             $(document).on('click','#btn' + tagArray[i].idCounter,function() {
                 // remove the old current and 5day categories
                 $(".flex-row").remove();
@@ -588,7 +591,6 @@ var formEl = document.querySelector("#user-form");
 var cityNameEl = document.querySelector("#city");
 formEl.addEventListener("submit", formSubmitHandler);
 
-
 function loadButtonsFirst() {
     var idCounter = localStorage.getItem("idCounter");
     if (!idCounter) {
@@ -611,7 +613,7 @@ function loadButtonsFirst() {
             recentBtn.classList = "recent-btn";
             recentSearches.appendChild(recentBtn);
 
-            // button handler for loaded searches with ls
+            // button handler for recent searches from the point of page load
             $(document).on('click','#btn' + (tagArray[i].idCounter),function() {
                 // remove the old current and 5day categories
                 $(".flex-row").remove();
