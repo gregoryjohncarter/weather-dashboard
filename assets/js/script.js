@@ -1,20 +1,20 @@
-var today = new Date();
+// var today = new Date();
 var apiKey = "2fdc7aca44061435df6123deff5f269c";
-// month is zero indexed, so add one
-var correctDate = today.getMonth() + 1;
-var todayDate = correctDate+"/"+today.getDate()+"/"+today.getFullYear();
+// // month is zero indexed, so add one. [not being used anymore,momentjs instead]
+// var correctDate = today.getMonth() + 1;
+// var todayDate = correctDate+"/"+today.getDate()+"/"+today.getFullYear();
 
-// check if the array was gotten already
+// make the array initially
 if (!tagArray) {
     var tagArray = [];
 }
 
-// function to add days to a string dynamically
-function addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  }
+// // function to add days to a string dynamically not being used anymore
+// function addDays(date, days) {
+//     var result = new Date(date);
+//     result.setDate(result.getDate() + days);
+//     return result;
+//   }
 
 var getTodaysWeather = function(cityName) {
     // format the openweather api
@@ -28,6 +28,7 @@ var getTodaysWeather = function(cityName) {
 
                 // second api call to onecall with the lat and long from the first call, to garner more results
                 var apiUrl2 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + responseLat + "&lon=" + responseLon + "&exclude=minutely,hourly&appid=" + apiKey + "&units=imperial";
+
                 fetch(apiUrl2).then(function(response) {
                     if (response.ok) {
                         response.json().then(function(data) {
@@ -74,7 +75,7 @@ var displayWeather = function(weather, city) {
         return;
     }
     
-    // implement a counter which also tells if the city has been searched for already and a new button should be added
+    // implement a counter which tells if the city has been searched for already and that a new button should be added
     var newSearch = true;
 
     for (i = 0; i < tagArray.length; i++) {
@@ -88,6 +89,11 @@ var displayWeather = function(weather, city) {
     if (newSearch === true) {
     window.idCounter += 1;
     }
+
+    // moment JS timezone info
+    var timeZone = weather.timezone_offset;
+    var timeZoneMin = timeZone / 60;
+    const currTime = moment().utcOffset(timeZoneMin).format("M/D/YYYY");
 
     // grab the icon and convert format
     var todayIcon = weather.current.weather[0].icon;
@@ -110,7 +116,7 @@ var displayWeather = function(weather, city) {
 
     // create todayEl title
     var todayElTitle = document.createElement("h2");
-    todayElTitle.innerHTML = city + " (" + todayDate + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
+    todayElTitle.innerHTML = city + " (" + currTime + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
     todayEl.appendChild(todayElTitle);
     todayElTitle.classList = "flex-row todayElTitle"
 
@@ -217,7 +223,7 @@ var displayWeather = function(weather, city) {
      humidity1 = humidity1.replace("\"","");
      humidity1 = humidity1.replace("\"","");
 
-    fiveP1.innerHTML = addDays(today, 1).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
+    fiveP1.innerHTML = moment(currTime).add(1, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
     fiveDayDiv.appendChild(fiveDiv1);
     fiveDiv1.appendChild(fiveP1)
 
@@ -241,7 +247,7 @@ var displayWeather = function(weather, city) {
      humidity2 = humidity2.replace("\"","");
      humidity2 = humidity2.replace("\"","");
 
-     fiveP2.innerHTML = addDays(today, 2).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
+     fiveP2.innerHTML = moment(currTime).add(2, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
     fiveDayDiv.appendChild(fiveDiv2);
     fiveDiv2.appendChild(fiveP2)
 
@@ -265,7 +271,7 @@ var displayWeather = function(weather, city) {
      humidity3 = humidity3.replace("\"","");
      humidity3 = humidity3.replace("\"","");
 
-     fiveP3.innerHTML = addDays(today, 3).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
+     fiveP3.innerHTML = moment(currTime).add(3, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
     fiveDayDiv.appendChild(fiveDiv3);
     fiveDiv3.appendChild(fiveP3)
 
@@ -289,7 +295,7 @@ var displayWeather = function(weather, city) {
      humidity4 = humidity4.replace("\"","");
      humidity4 = humidity4.replace("\"","");
 
-     fiveP4.innerHTML = addDays(today, 4).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
+     fiveP4.innerHTML = moment(currTime).add(4, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
     fiveDayDiv.appendChild(fiveDiv4);
     fiveDiv4.appendChild(fiveP4)
 
@@ -313,7 +319,7 @@ var displayWeather = function(weather, city) {
      humidity5 = humidity5.replace("\"","");
      humidity5 = humidity5.replace("\"","");
 
-     fiveP5.innerHTML = addDays(today, 5).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
+     fiveP5.innerHTML = moment(currTime).add(5, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
     fiveDayDiv.appendChild(fiveDiv5);
     fiveDiv5.appendChild(fiveP5);
 
@@ -324,6 +330,8 @@ var displayWeather = function(weather, city) {
         // keep count in ls of cities searched and therefore buttons
         localStorage.setItem("idCounter", window.idCounter);
         cityElement.idCounter = window.idCounter;
+
+        cityElement.timezone = timeZone;
 
         cityElement.city = city;
         cityElement.icon = todayIcon;
@@ -361,11 +369,12 @@ var displayWeather = function(weather, city) {
         localStorage.setItem("tagArray", JSON.stringify(tagArray));   
     }
 
+    // only set and push a new cityElement if it's actually a new search
     if (newSearch === true) {
     setElement();
     }
 
-    // before loading buttons refresh array??
+    // before loading buttons refresh array ??
     tagArray = localStorage.getItem("tagArray");
     tagArray = JSON.parse(tagArray);
 
@@ -382,12 +391,18 @@ var displayWeather = function(weather, city) {
                 icon = icon.replace("\"","");
                 icon = icon.replace("\"","");
 
+                // timezone load
+                // moment JS timezone info
+                var timeZone = tagArray[i].timezone;
+                var timeZoneMin = timeZone / 60;
+                const currTime = moment().utcOffset(timeZoneMin).format("M/D/YYYY");
+                
                 // format city name
                 var city = tagArray[i].city;
 
                 // create todayEl title
                 var todayElTitle = document.createElement("h2");
-                todayElTitle.innerHTML = city + " (" + todayDate + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
+                todayElTitle.innerHTML = city + " (" + currTime + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
                 todayEl.appendChild(todayElTitle);
                 todayElTitle.classList = "flex-row todayElTitle"
 
@@ -483,7 +498,7 @@ var displayWeather = function(weather, city) {
                 humidity1 = humidity1.replace("\"","");
                 humidity1 = humidity1.replace("\"","");
 
-                fiveP1.innerHTML = addDays(today, 1).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
+                fiveP1.innerHTML = moment(currTime).add(1, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
                 fiveDayDiv.appendChild(fiveDiv1);
                 fiveDiv1.appendChild(fiveP1)
 
@@ -507,7 +522,7 @@ var displayWeather = function(weather, city) {
                 humidity2 = humidity2.replace("\"","");
                 humidity2 = humidity2.replace("\"","");
 
-                fiveP2.innerHTML = addDays(today, 2).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
+                fiveP2.innerHTML = moment(currTime).add(2, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
                 fiveDayDiv.appendChild(fiveDiv2);
                 fiveDiv2.appendChild(fiveP2)
 
@@ -531,7 +546,7 @@ var displayWeather = function(weather, city) {
                 humidity3 = humidity3.replace("\"","");
                 humidity3 = humidity3.replace("\"","");
 
-                fiveP3.innerHTML = addDays(today, 3).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
+                fiveP3.innerHTML = moment(currTime).add(3, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
                 fiveDayDiv.appendChild(fiveDiv3);
                 fiveDiv3.appendChild(fiveP3)
 
@@ -555,7 +570,7 @@ var displayWeather = function(weather, city) {
                 humidity4 = humidity4.replace("\"","");
                 humidity4 = humidity4.replace("\"","");
 
-                fiveP4.innerHTML = addDays(today, 4).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
+                fiveP4.innerHTML = moment(currTime).add(4, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
                 fiveDayDiv.appendChild(fiveDiv4);
                 fiveDiv4.appendChild(fiveP4)
 
@@ -579,7 +594,7 @@ var displayWeather = function(weather, city) {
                 humidity5 = humidity5.replace("\"","");
                 humidity5 = humidity5.replace("\"","");
 
-                fiveP5.innerHTML = addDays(today, 5).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
+                fiveP5.innerHTML = moment(currTime).add(5, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
                 fiveDayDiv.appendChild(fiveDiv5);
                 fiveDiv5.appendChild(fiveP5);
         });
@@ -628,12 +643,17 @@ function loadButtonsFirst() {
                 icon = icon.replace("\"","");
                 icon = icon.replace("\"","");
 
+                // moment JS timezone info
+                var timeZone = tagArray[i].timezone;
+                var timeZoneMin = timeZone / 60;
+                const currTime = moment().utcOffset(timeZoneMin).format("M/D/YYYY");
+        
                 // format city name
                 var city = tagArray[i].city;
 
                 // create todayEl title
                 var todayElTitle = document.createElement("h2");
-                todayElTitle.innerHTML = city + " (" + todayDate + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
+                todayElTitle.innerHTML = city + " (" + currTime + ")" + "<img src='http://openweathermap.org/img/w/" + icon + ".png' width='55' height='55'/>";
                 todayEl.appendChild(todayElTitle);
                 todayElTitle.classList = "flex-row todayElTitle"
 
@@ -729,7 +749,7 @@ function loadButtonsFirst() {
                 humidity1 = humidity1.replace("\"","");
                 humidity1 = humidity1.replace("\"","");
 
-                fiveP1.innerHTML = addDays(today, 1).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
+                fiveP1.innerHTML = moment(currTime).add(1, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon1 + ".png' width='55' height='55'/><br>Temp: " + temp1 + " °F<br>Wind: " + wind1 + " MPH<br>Humidity: " + humidity1 +"%";
                 fiveDayDiv.appendChild(fiveDiv1);
                 fiveDiv1.appendChild(fiveP1)
 
@@ -753,7 +773,7 @@ function loadButtonsFirst() {
                 humidity2 = humidity2.replace("\"","");
                 humidity2 = humidity2.replace("\"","");
 
-                fiveP2.innerHTML = addDays(today, 2).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
+                fiveP2.innerHTML = moment(currTime).add(2, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon2 + ".png' width='55' height='55'/><br>Temp: " + temp2 + " °F<br>Wind: " + wind2 + " MPH<br>Humidity: " + humidity2 +"%";
                 fiveDayDiv.appendChild(fiveDiv2);
                 fiveDiv2.appendChild(fiveP2)
 
@@ -777,7 +797,7 @@ function loadButtonsFirst() {
                 humidity3 = humidity3.replace("\"","");
                 humidity3 = humidity3.replace("\"","");
 
-                fiveP3.innerHTML = addDays(today, 3).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
+                fiveP3.innerHTML = moment(currTime).add(3, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon3 + ".png' width='55' height='55'/><br>Temp: " + temp3 + " °F<br>Wind: " + wind3 + " MPH<br>Humidity: " + humidity3 +"%";
                 fiveDayDiv.appendChild(fiveDiv3);
                 fiveDiv3.appendChild(fiveP3)
 
@@ -801,7 +821,7 @@ function loadButtonsFirst() {
                 humidity4 = humidity4.replace("\"","");
                 humidity4 = humidity4.replace("\"","");
 
-                fiveP4.innerHTML = addDays(today, 4).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
+                fiveP4.innerHTML = moment(currTime).add(4, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon4 + ".png' width='55' height='55'/><br>Temp: " + temp4 + " °F<br>Wind: " + wind4 + " MPH<br>Humidity: " + humidity4 +"%";
                 fiveDayDiv.appendChild(fiveDiv4);
                 fiveDiv4.appendChild(fiveP4)
 
@@ -825,7 +845,7 @@ function loadButtonsFirst() {
                 humidity5 = humidity5.replace("\"","");
                 humidity5 = humidity5.replace("\"","");
 
-                fiveP5.innerHTML = addDays(today, 5).toLocaleDateString("en-US") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
+                fiveP5.innerHTML = moment(currTime).add(5, 'days').format("M/D/YYYY") + "<br><img src='http://openweathermap.org/img/w/" + icon5 + ".png' width='55' height='55'/><br>Temp: " + temp5 + " °F<br>Wind: " + wind5 + " MPH<br>Humidity: " + humidity5 +"%";
                 fiveDayDiv.appendChild(fiveDiv5);
                 fiveDiv5.appendChild(fiveP5);
             });
