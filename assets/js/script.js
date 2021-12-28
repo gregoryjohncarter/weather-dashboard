@@ -74,6 +74,19 @@ var displayWeather = function(weather, city) {
         todayEl.textContent = "This city is not registered!"
         return;
     }
+
+     // from stack overflow, for capitalizing
+     function toTitleCase(str) {
+        return str.replace(
+          /\w\S*/g,
+          function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          }
+        );
+    }
+
+    // format city name
+    var city = toTitleCase(city);
     
     // implement a counter which tells if the city has been searched for already and that a new button should be added
     var newSearch = true;
@@ -100,19 +113,6 @@ var displayWeather = function(weather, city) {
     var icon = JSON.stringify(todayIcon);
     icon = icon.replace("\"","");
     icon = icon.replace("\"","");
-
-    // from stack overflow, for capitalizing
-    function toTitleCase(str) {
-        return str.replace(
-          /\w\S*/g,
-          function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-          }
-        );
-    }
-
-    // format city name
-    var city = toTitleCase(city);
 
     // create todayEl title
     var todayElTitle = document.createElement("h2");
@@ -364,6 +364,8 @@ var displayWeather = function(weather, city) {
         cityElement.temp5 = todayTemp5;
         cityElement.wind5 = todayWind5;
         cityElement.humidity5 = todayHumidity5;
+
+        cityElement.time = currTime;
         
         tagArray.push(cityElement);
         localStorage.setItem("tagArray", JSON.stringify(tagArray));   
@@ -391,11 +393,12 @@ var displayWeather = function(weather, city) {
                 icon = icon.replace("\"","");
                 icon = icon.replace("\"","");
 
-                // timezone load
-                // moment JS timezone info
-                var timeZone = tagArray[i].timezone;
-                var timeZoneMin = timeZone / 60;
-                const currTime = moment().utcOffset(timeZoneMin).format("M/D/YYYY");
+                // time logged when searched initially
+                var currTime = tagArray[i].time;
+                var time = JSON.stringify(currTime);
+                time = time.replace("\"","");
+                time = time.replace("\"","");
+                currTime = time;
                 
                 // format city name
                 var city = tagArray[i].city;
@@ -643,10 +646,12 @@ function loadButtonsFirst() {
                 icon = icon.replace("\"","");
                 icon = icon.replace("\"","");
 
-                // moment JS timezone info
-                var timeZone = tagArray[i].timezone;
-                var timeZoneMin = timeZone / 60;
-                const currTime = moment().utcOffset(timeZoneMin).format("M/D/YYYY");
+                // time logged when searched initially
+                var currTime = tagArray[i].time;
+                var time = JSON.stringify(currTime);
+                time = time.replace("\"","");
+                time = time.replace("\"","");
+                currTime = time;
         
                 // format city name
                 var city = tagArray[i].city;
